@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from scipy.integrate import trapezoid
 from scipy.interpolate import interp1d
 from scipy.signal import welch
 from scipy.spatial.distance import pdist, squareform
@@ -389,7 +389,7 @@ def bandpower_from_psd(f, pxx, fmin, fmax):
     mask = (f >= fmin) & (f < fmax)
     if not np.any(mask):
         return np.nan
-    return float(np.trapz(pxx[mask], f[mask]))
+    return float(trapezoid(pxx[mask], f[mask]))
 
 
 def compute_freq_bands(rri_ms: np.ndarray, fs: float = 4.0, lam: float = 500.0):
@@ -892,4 +892,5 @@ try:
             st.pyplot(fig3)
 
 except Exception as e:
+
     st.error(f"Error procesando el archivo: {e}")
